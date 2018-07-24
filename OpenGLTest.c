@@ -37,7 +37,7 @@ int elapsed;
 int cycleCounter = 0;
 
 char string[256];
-// FLAGS
+// FLAGS TODO::Normalize these.
 bool isDisplayingText = true;
 bool timerSet = false;
 int testFlag = 0;
