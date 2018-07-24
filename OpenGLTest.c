@@ -183,13 +183,13 @@ void GL_mouseHandler(int button, int state, int theX, int theY){
 
 // DISCLAIMER: THIS IS A COMPLETE GUESS ON HOW TO DO THIS
   if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-    theX = oldX;
-    theY = oldY;
+      oldX = theX;
+      oldY = theY;
   }
 
   if(button == GLUT_LEFT_BUTTON && state == GLUT_UP){
-    theX = newX;
-    theY = newY;
+    newX = theX;
+    newY = theY;
   }
 
   if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && !testFlag){
