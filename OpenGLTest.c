@@ -25,6 +25,8 @@ int doubleCount[256] = {0};
 
 float angle = 0.0;
 float x = 0,y = 0;
+float oldX, oldY;
+float newX, newY;
 float resizeH = 0;
 float resizeW = 0;
 
@@ -37,7 +39,7 @@ int elapsed;
 int cycleCounter = 0;
 
 char string[256];
-// FLAGS TODO::Normalize these.
+// FLAGS
 bool isDisplayingText = true;
 bool timerSet = false;
 int testFlag = 0;
@@ -171,6 +173,44 @@ void GL_keyPressed(unsigned char key){
 
 }
 
+void GL_mouseHandler(int button, int state, int theX, int theY){
+
+  if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+    red  = 0.0;
+    green = 0.0;
+    blue = 0.0;
+  }
+
+// DISCLAIMER: THIS IS A COMPLETE GUESS ON HOW TO DO THIS
+  if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+    theX = oldX;
+    theY = oldY;
+  }
+
+  if(button == GLUT_LEFT_BUTTON && state == GLUT_UP){
+    theX = newX;
+    theY = newY;
+  }
+
+  if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && !testFlag){
+    x = (theX - (theWidth/2))/(theWidth/2);
+    y = -((theY - theHeight/2)/(theHeight/2));
+  }
+
+}
+// MIGHT NOT EVEN BE NEEDED?
+void GL_dragHandler(int theX, int theY){
+
+
+
+}
+
+void GL_keyUp(unsigned char key){
+
+  if(keys[key]) keys[key] = false;
+
+}
+
 void GL_Periodic(){
   // sprintf(string, "DOUBLECOUNT M: %i",doubleCount['m']);
   sprintf(string, "ELAPSED: %i",elapsed);
@@ -181,28 +221,6 @@ void GL_Periodic(){
   for (int i = 0; i < 256; i++) {
     if(doubleCount[i]) doubleCount[i]--;
   }
-}
-
-void GL_mouseHandler(int button, int state, int theX, int theY){
-
-  if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
-    red  = 0.0;
-    green = 0.0;
-    blue = 0.0;
-  }
-
-
-  if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && !testFlag){
-    x = (theX - (theWidth/2))/(theWidth/2);
-    y = -((theY - theHeight/2)/(theHeight/2));
-  }
-
-}
-
-void GL_keyUp(unsigned char key){
-
-  if(keys[key]) keys[key] = false;
-
 }
 
 void GL_idle(){
@@ -474,6 +492,7 @@ int main(int argc, char **argv){
   glutReshapeFunc(GL_reshape);
   glutKeyboardFunc(GL_keyPressed);
   glutMouseFunc(GL_mouseHandler);
+  glutMotionFunc(GL_dragHandler);
   glutKeyboardUpFunc(GL_keyUp);
   glutTimerFunc(1000,GL_timer,0);
   glutIdleFunc(GL_idle);
