@@ -173,7 +173,11 @@ void GL_keyPressed(unsigned char key){
 
 }
 
+int dragState = 0;
+
+
 void GL_mouseHandler(int button, int state, int theX, int theY){
+
 
   if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
     red  = 0.0;
@@ -183,13 +187,17 @@ void GL_mouseHandler(int button, int state, int theX, int theY){
 
 // DISCLAIMER: THIS IS A COMPLETE GUESS ON HOW TO DO THIS
   if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+    if(dragState == 0){
       oldX = theX;
       oldY = theY;
+      dragState = 1;
+    }
   }
 
   if(button == GLUT_LEFT_BUTTON && state == GLUT_UP){
-    newX = theX;
-    newY = theY;
+    // newX = theX;
+    // newY = theY;
+    dragState = 0;
   }
 
   if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && !testFlag){
@@ -201,7 +209,13 @@ void GL_mouseHandler(int button, int state, int theX, int theY){
 // MIGHT NOT EVEN BE NEEDED?
 void GL_dragHandler(int theX, int theY){
 
-
+  glutPostRedisplay();
+  newX = theX;
+  newY = theY;
+  if(fabs(oldX - newX) > 20 && fabs(oldY - newY) > 20){
+    resizeW = -((newX - oldX)/(theWidth/2.0));
+    resizeH = -((newY - oldY)/(theHeight/2.0));
+  }
 
 }
 
