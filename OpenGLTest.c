@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+// COMPILE WITH cc OpenGLTest.c -o tracking -lGL -lGLU -lglut for linux
+
 // IF YOU ARE GREG
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -15,9 +17,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-
-//#include <GLFW/glfw3.h>
-
 
 // GLOBALS
 bool keys[256] = {false};
