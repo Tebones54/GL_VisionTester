@@ -28,6 +28,7 @@ float oldX, oldY;
 float newX, newY;
 float resizeH = 0;
 float resizeW = 0;
+int kSpeed = 1;
 
 int autoState = 0;
 
@@ -59,15 +60,15 @@ void GL_reshape(int width, int height)
 void GL_keyPressed(unsigned char key){
   keys[key] = true;
 
-  if(keys['w']) y+=0.01;
-  if(keys['a']) x-=0.01;
-  if(keys['s']) y-=0.01;
-  if(keys['d']) x+=0.01;
+  if(keys['w']) y+=0.01*kSpeed;
+  if(keys['a']) x-=0.01*kSpeed;
+  if(keys['s']) y-=0.01*kSpeed;
+  if(keys['d']) x+=0.01*kSpeed;
 
-  if(keys['W']) y+=0.05;
-  if(keys['A']) x-=0.05;
-  if(keys['S']) y-=0.05;
-  if(keys['D']) x+=0.05;
+  if(keys['W']) y+=0.05*kSpeed;
+  if(keys['A']) x-=0.05*kSpeed;
+  if(keys['S']) y-=0.05*kSpeed;
+  if(keys['D']) x+=0.05*kSpeed;
 
   if(keys['i']) resizeH+=0.01;
   if(keys['j']) resizeW+=0.01;
@@ -122,6 +123,19 @@ void GL_keyPressed(unsigned char key){
     autoState = 1;
     fullTestState = 0;
   }
+
+  if (key == 'q') {
+    if(kSpeed > 1){
+      kSpeed--;
+    }
+  }
+
+  if (key == 'e') {
+    if(kSpeed < 10){
+      kSpeed++;
+    }
+  }
+
 
   if (key == 'm') {
     if(triangleFlag){
@@ -228,8 +242,10 @@ void GL_Periodic(){
   // sprintf(string, "DOUBLECOUNT M: %i",doubleCount['m']);
   sprintf(string, "ELAPSED: %i",elapsed);
   displayText(string,1,15);
-  sprintf(string, "RUNNING TEST AUTON: %i", theAuton);
+  sprintf(string, "RUNNING TEST: %i", theAuton);
   displayText(string,1,30);
+  sprintf(string, "SPEED: X%i",kSpeed);
+  displayText(string,1,21);
 
   for (int i = 0; i < 256; i++) {
     if(doubleCount[i]) doubleCount[i]--;
@@ -252,25 +268,25 @@ void GL_timer(){
 void borderTest(){
   switch (autoState) {
     case 1:
-      x += 0.01;
+      x += 0.01*kSpeed;
       if (x > 0.85) {
         autoState = 2;
       }
       break;
     case 2:
-      y -= 0.01;
+      y -= 0.01*kSpeed;
       if(y < -0.85){
         autoState = 3;
       }
       break;
     case 3:
-      x -= 0.01;
+      x -= 0.01*kSpeed;
       if(x < -0.85){
         autoState = 4;
       }
       break;
     case 4:
-      y += 0.01;
+      y += 0.01*kSpeed;
       if(y > 0.85){
         autoState = 1;
         cycleCounter++;
@@ -285,13 +301,13 @@ void sweepTest(){
   // blue = 0.0;
   switch (autoState) {
     case 1:
-      x += 0.01;
+      x += 0.01*kSpeed;
       if(x > 0.85){
         autoState = 2;
       }
       break;
     case 2:
-      x -= 0.01;
+      x -= 0.01*kSpeed;
       if(x < -0.85){
         autoState = 1;
         cycleCounter++;
@@ -307,13 +323,13 @@ void verticalTest(){
   // blue = 0.0;
   switch (autoState) {
     case 1:
-        y += 0.01;
+        y += 0.01*kSpeed;
         if(y > 0.85){
           autoState = 2;
         }
       break;
     case 2:
-        y -= 0.01;
+        y -= 0.01*kSpeed;
         if(y < -0.85){
           autoState = 1;
           cycleCounter++;
@@ -326,34 +342,34 @@ void infinityTest(){
     switch (autoState) {
       case 1:
           if (x < 0.85) {
-            x += 0.01;
+            x += 0.01*kSpeed;
           }
           if (y < 0.85) {
-            y += 0.01;
+            y += 0.01*kSpeed;
           }
           if (x >= 0.85 && y >= 0.85) {
             autoState = 2;
           }
         break;
       case 2:
-          y -= 0.01;
+          y -= 0.01*kSpeed;
           if (y < -0.85) {
             autoState = 3;
           }
         break;
       case 3:
           if (x > -0.85) {
-            x -= 0.01;
+            x -= 0.01*kSpeed;
           }
           if (y < 0.85) {
-            y += 0.01;
+            y += 0.01*kSpeed;
           }
           if (x <= -0.85 && y >= 0.85) {
             autoState = 4;
           }
         break;
       case 4:
-          y -= 0.01;
+          y -= 0.01*kSpeed;
           if (y < -0.85) {
             autoState = 1;
             cycleCounter++;
